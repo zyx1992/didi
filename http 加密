@@ -1,3 +1,5 @@
+背景：passport的密码相关信息需要rsa非对称加密。即公钥加密，发送后端，后端私钥解密（jsencrypt库）。但是发现发送给后端的加密信息，解密出现错误，多了一些空格。
+
 一、HTTP 请求数据格式
 
 1. application/x-www-form-urlencoded  浏览器原生form表单，URL转义
@@ -8,6 +10,7 @@
 二、 application/x-www-form-urlencoded 
 
 说明地址：https://docs.oracle.com/javase/6/docs/api/java/net/URLEncoder.html
+规范地址：https://www.w3.org/TR/html401/interact/forms.html#h-17.13.4.1
 
 body: view parsed时（优化将+显示成" "）
 
@@ -16,4 +19,16 @@ eg： "SunjzYl72uIz CPGNICIyXe"
 body: view source
 eg： "SunjzYl72uIz+CPGNICIyXe"
 
-服务端：request.getParameter() 获取
+服务端：request.getParameter() 获取参数，“+”被转化成“ ”,导致解析加密失败
+步骤：
+1. 判断是否有“%”和“+”，有则decode
+2. 是“+”则替换为“ ”
+
+三、encodeURI和encodeURIComponent
+
+encodeURI: https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/encodeURI
+encodeURIComponent: https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent
+
+解释：请注意，encodeURI 自身无法产生能适用于HTTP GET 或 POST 请求的URI，例如对于 XMLHTTPRequests, 因为 "&", "+", 和 "=" 不会被编码，然而在 GET 和 POST 请求中它们是特殊字符。然而encodeURIComponent这个方法会对这些字符编码。
+
+编码范围encodeURIComponent比encodeURI大
