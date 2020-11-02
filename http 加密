@@ -1,1 +1,19 @@
+一、HTTP 请求数据格式
 
+1. application/x-www-form-urlencoded  浏览器原生form表单，URL转义
+2. multipart/form-data 表单上传文件
+3. application/json
+4. text/xml 
+
+二、 application/x-www-form-urlencoded 
+
+说明地址：https://docs.oracle.com/javase/6/docs/api/java/net/URLEncoder.html
+
+body: view parsed时（优化将+显示成" "）
+
+eg： "SunjzYl72uIz CPGNICIyXe"
+
+body: view source
+eg： "SunjzYl72uIz+CPGNICIyXe"
+
+服务端：request.getParameter() 获取
