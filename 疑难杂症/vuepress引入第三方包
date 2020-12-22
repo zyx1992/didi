@@ -1,0 +1,2 @@
+1. Vuepress中enhanceApp.js引入element-ui报错Cannot find module ‘throttle-debounce/debounce‘
+解决：package.json中，throttle-debounce降低版本至1.1.0
